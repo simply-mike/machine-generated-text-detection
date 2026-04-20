@@ -1,0 +1,12 @@
+numpy
+pandas
+scikit-learn
+torch
+transformers
+sentencepiece
+tensorboard
+tqdm
+jupyter
+fastapi
+uvicorn[standard]
+pydantic

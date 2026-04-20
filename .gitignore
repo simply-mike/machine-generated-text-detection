@@ -1,0 +1,34 @@
+# Data and generated artifacts
+data/*
+!data/README.md
+runs/
+checkpoints/
+outputs/
+reports/*.csv
+
+# Model files
+models/*
+!models/README.md
+*.pt
+*.pth
+*.bin
+*.safetensors
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Environments
+.env
+.venv/
+venv/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
