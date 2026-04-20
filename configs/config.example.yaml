@@ -1,0 +1,12 @@
+seed: 42
+max_length: 256
+batch_size: 16
+num_epochs: 5
+dropout: 0.2
+classifier_lr: 2.0e-5
+encoder_lr: 1.0e-5
+weight_decay: 0.01
+log_root: runs/task7
+checkpoint_root: checkpoints/task7
+train_path: SemEval2024-task8/subtaskA/data/subtaskA_train_multilingual.jsonl
+dev_path: SemEval2024-task8/subtaskA/data/subtaskA_dev_multilingual.jsonl
