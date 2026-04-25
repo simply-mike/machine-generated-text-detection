@@ -1,0 +1,14 @@
+.git
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+venv/
+data/
+runs/
+checkpoints/
+models/*
+!models/README.md
