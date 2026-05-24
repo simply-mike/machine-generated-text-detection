@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
@@ -6,6 +8,6 @@ class PredictionRequest(BaseModel):
 
 
 class PredictionResponse(BaseModel):
-    label: str
-    probability_human: float
-    probability_machine: float
+    label: Literal["human", "machine"]
+    probability_human: float = Field(..., ge=0.0, le=1.0)
+    probability_machine: float = Field(..., ge=0.0, le=1.0)

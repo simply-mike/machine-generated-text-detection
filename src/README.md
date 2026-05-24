@@ -7,8 +7,9 @@ Current files:
 ```text
 src/
 ├── __init__.py
-├── inference.py       # Hugging Face model wrapper for prediction
-└── preprocessing.py   # Inference-time text normalization
+├── inference.py       # Checkpoint loading and prediction wrapper
+├── modeling.py        # Encoder + mean pooling + MLP classifier
+└── preprocessing.py   # Text normalization shared with training
 ```
 
 The training pipeline is still notebook-first. A future production-oriented refactor could add:

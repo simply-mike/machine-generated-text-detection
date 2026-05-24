@@ -66,9 +66,11 @@ The staged schedule was:
 
 ```text
 epoch 1: classifier head only
-epochs 2-4: full encoder fine-tuning
+epochs 2-4: encoder fine-tuning
 epoch 5: classifier head only
 ```
+
+For mDeBERTa-v3, the encoder phase unfreezes only the last encoder layers to keep training stable.
 
 Training logs include loss and validation metrics for TensorBoard.
 
@@ -99,7 +101,8 @@ The repository also includes a FastAPI app for serving a saved Hugging Face-comp
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/health` | Service health check |
+| `GET` | `/health` | Process health check |
+| `GET` | `/ready` | Check that the model checkpoint can be loaded |
 | `POST` | `/predict` | Classify input text |
 
 Input example:
@@ -120,25 +123,21 @@ Response example:
 }
 ```
 
-### Save the fine-tuned model
+### Save the fine-tuned checkpoint
 
-After training the best model in the notebook, save the model and tokenizer locally:
-
-```python
-model.save_pretrained("models/mdeberta_processed_article")
-tokenizer.save_pretrained("models/mdeberta_processed_article")
-```
-
-By default, the API loads the model from:
+The notebook saves the best run as a PyTorch checkpoint. By default, the API loads:
 
 ```text
-models/mdeberta_processed_article
+checkpoints/task7/article_style/mdeberta_processed_article/best_model.pt
 ```
 
-To use another path, set `MODEL_PATH`:
+The checkpoint contains the custom `EncoderClassifier` state dict used during training. The API rebuilds the same architecture from `MODEL_NAME` and then loads this checkpoint.
+
+To use another checkpoint or encoder, set:
 
 ```bash
-export MODEL_PATH="models/mdeberta_processed_article"
+export MODEL_NAME="microsoft/mdeberta-v3-base"
+export CHECKPOINT_PATH="checkpoints/task7/article_style/mdeberta_processed_article/best_model.pt"
 ```
 
 ### Run locally
@@ -177,11 +176,11 @@ Build the image:
 docker build -t text-detection-api .
 ```
 
-Run the container and mount local model files:
+Run the container and mount local checkpoint files:
 
 ```bash
 docker run -p 8000:8000 \
-  -v $(pwd)/models:/app/models \
+  -v $(pwd)/checkpoints:/app/checkpoints \
   text-detection-api
 ```
 

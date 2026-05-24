@@ -1,13 +1,12 @@
+import html
 import re
 
 
 def clean_text(text: str) -> str:
-    """Apply lightweight inference-time text normalization.
-
-    Keep this function aligned with the preprocessing used during training.
-    The current version only strips the text and collapses repeated whitespace,
-    because aggressive cleaning can shift the inference distribution.
-    """
-    text = text.strip()
+    """Apply the same text normalization used in the training notebook."""
+    text = html.unescape(str(text))
+    text = re.sub(r"@[A-Za-z0-9_]+", " ", text)
+    text = re.sub(r"https?://\S+|www\.\S+", " ", text)
+    text = re.sub(r"<[^>]+>", " ", text)
     text = re.sub(r"\s+", " ", text)
-    return text
+    return text.strip()

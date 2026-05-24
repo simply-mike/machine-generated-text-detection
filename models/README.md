@@ -2,28 +2,28 @@
 
 Fine-tuned model weights are intentionally not stored in this repository.
 
-Expected local structure:
+The current API serves the custom `EncoderClassifier` checkpoint produced by the training notebook. The expected local structure is:
 
 ```text
-models/
-└── mdeberta_processed_article/
-    ├── config.json
-    ├── model.safetensors
-    ├── tokenizer.json
-    ├── tokenizer_config.json
-    └── ...
+checkpoints/
+└── task7/
+    └── article_style/
+        └── mdeberta_processed_article/
+            └── best_model.pt
 ```
 
-Save the best fine-tuned model from the notebook:
+The notebook writes `best_model.pt` during training. The checkpoint contains:
 
-```python
-model.save_pretrained("models/mdeberta_processed_article")
-tokenizer.save_pretrained("models/mdeberta_processed_article")
-```
+- `state_dict`
+- `model_name`
+- `label_names`
+- `max_length`
+- `dropout`
 
-The FastAPI service reads the model path from the `MODEL_PATH` environment variable.
+The FastAPI service reads the encoder from `MODEL_NAME` and the checkpoint from `CHECKPOINT_PATH`.
 By default it expects:
 
 ```text
-models/mdeberta_processed_article
+MODEL_NAME=microsoft/mdeberta-v3-base
+CHECKPOINT_PATH=checkpoints/task7/article_style/mdeberta_processed_article/best_model.pt
 ```
